@@ -25,6 +25,11 @@ include_directories (
     ${GTEST_INCLUDE_DIRS}
 )
 
+# Special flags fo generating code coverage.
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+set (CMAKE_SHARED_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
+
+
 # Test suites.
 set (
     calculator_test_SOURCES
@@ -37,7 +42,21 @@ add_executable (calculator_test EXCLUDE_FROM_ALL ${calculator_test_SOURCES})
 target_link_libraries (
     calculator_test
     ${GTEST_BOTH_LIBRARIES}
+    gcov
     pthread
 )
 add_dependencies (calculator_test googletest)
 add_test (calculator_test calculator_test)
+
+
+# Test coverage report.
+set (Coverage_REPORT ${CMAKE_CURRENT_BINARY_DIR}/coverage.info)
+set (Coverage_DIR    ${CMAKE_CURRENT_BINARY_DIR}/coverage)
+add_custom_command (
+    OUTPUT  ${Coverage_REPORT}
+    COMMAND lcov -q -c -f -b . -d ${CMAKE_CURRENT_BINARY_DIR} -o ${Coverage_REPORT}
+    COMMAND lcov -e ${Coverage_REPORT} '${PROJECT_SOURCE_DIR}/src/*' -o ${Coverage_REPORT}
+    COMMAND genhtml ${Coverage_REPORT} --legend --demangle-cpp -f -q -o ${Coverage_DIR}
+    DEPENDS calculator_test
+)
+add_custom_target (coverage DEPENDS ${Coverage_REPORT})
