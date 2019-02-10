@@ -1,3 +1,5 @@
+enable_testing ()
+
 # Framework for writing tests.
 ExternalProject_Add (
     googletest
@@ -11,6 +13,8 @@ ExternalProject_Add (
 )
 set_target_properties (googletest PROPERTIES EXCLUDE_FROM_ALL TRUE)
 ExternalProject_Get_Property (googletest source_dir binary_dir)
+set (GTEST_ROOT "${CMAKE_CURRENT_BINARY_DIR}/googletest")
+set (GTEST_FOUND TRUE)
 set (GTEST_INCLUDE_DIRS   "${source_dir}/googletest/include")
 set (GTEST_LIBRARIES      "${binary_dir}/googlemock/gtest/libgtest.a")
 set (GTEST_MAIN_LIBRARIES "${binary_dir}/googlemock/gtest/libgtest_main.a")
@@ -28,7 +32,7 @@ set (
     ${PROJECT_SOURCE_DIR}/test/calculator_test.cpp
 )
 
-add_executable (calculator_test ${calculator_test_SOURCES})
+add_executable (calculator_test EXCLUDE_FROM_ALL ${calculator_test_SOURCES})
 
 target_link_libraries (
     calculator_test
@@ -36,3 +40,4 @@ target_link_libraries (
     pthread
 )
 add_dependencies (calculator_test googletest)
+add_test (calculator_test calculator_test)
