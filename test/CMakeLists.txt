@@ -4,7 +4,7 @@ enable_testing ()
 ExternalProject_Add (
     googletest
     GIT_REPOSITORY "https://github.com/google/googletest.git"
-    GIT_TAG "release-1.8.1"
+    GIT_TAG "v1.10.x"
     CMAKE_ARGS "-DCMAKE_BUILD_TYPE=Release"
     SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/googletest"
     BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/googletest"
@@ -16,8 +16,8 @@ ExternalProject_Get_Property (googletest source_dir binary_dir)
 set (GTEST_ROOT "${CMAKE_CURRENT_BINARY_DIR}/googletest")
 set (GTEST_FOUND TRUE)
 set (GTEST_INCLUDE_DIRS   "${source_dir}/googletest/include")
-set (GTEST_LIBRARIES      "${binary_dir}/googlemock/gtest/libgtest.a")
-set (GTEST_MAIN_LIBRARIES "${binary_dir}/googlemock/gtest/libgtest_main.a")
+set (GTEST_LIBRARIES      "${binary_dir}/lib/libgtest.a")
+set (GTEST_MAIN_LIBRARIES "${binary_dir}/lib/libgtest_main.a")
 set (GTEST_BOTH_LIBRARIES ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})
 
 include_directories (
