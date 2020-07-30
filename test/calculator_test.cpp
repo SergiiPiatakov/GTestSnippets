@@ -30,7 +30,7 @@ TEST_F (CalculatorTest, Add_Case001_Success)
     // Act.
     const int test = calculator.Add (0, 1);
 
-    // Arrange.
+    // Assert.
     EXPECT_EQ (etalon, test);
 }
 
@@ -42,7 +42,7 @@ TEST_F (CalculatorTest, Add_Case002_Success)
     // Act.
     const int test = calculator.Add (2, 3);
 
-    // Arrange.
+    // Assert.
     EXPECT_EQ (etalon, test);
 }
 
